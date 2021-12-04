@@ -26,21 +26,21 @@ class Report:
         while current_power > 0:
             current_power -= 1
             current_split = 2 ** current_power
-            splitted: dict[str, list[int]] = {"1": [], "0": []}
-            for num in self.bins:
-                if num >= current_split:
-                    splitted["1"].append(num - current_split)
+            ones = 0
+            zeros = 0
+            for i in range(len(self.bins)):
+                if self.bins[i] >= current_split:
+                    self.bins[i] -= current_split
+                    ones += 1
                 else:
-                    splitted["0"].append(num)
+                    zeros += 1
 
-            if len(splitted["1"]) >= len(splitted["0"]):
+            if ones >= zeros:
                 gammas.append("1")
                 epsilons.append("0")
             else:
                 gammas.append("0")
                 epsilons.append("1")
-
-            self.bins = splitted["1"] + splitted["0"]
 
         gamma = get_binary_int(gammas)
         epsilon = get_binary_int(epsilons)
