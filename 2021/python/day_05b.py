@@ -53,7 +53,7 @@ def count_overlaps(grid):
 def solve(test: bool = False):
     inp = get_input(test)
     vecs = parse_input(inp)
-    grid = defaultdict(int)
+    grid: dict[tuple[int, int], int] = defaultdict(int)
     for vec in vecs:
         vec.path_trough(grid)
     return count_overlaps(grid)

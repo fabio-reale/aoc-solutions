@@ -1,31 +1,30 @@
 from pathlib import Path
 from collections import defaultdict, Counter
+from math import copysign
 
 
 class Vector:
     def __init__(self, st: tuple[int, int], end: tuple[int, int]) -> None:
         self.st = st
         self.end = end
+        self.delta = (sign(end[0] - st[0]), sign(end[1] - st[1]))
 
     def __repr__(self) -> str:
         return f"Vector({self.st}, {self.end})"
 
-    def is_hor(self) -> bool:
-        return self.st[1] == self.end[1]
-
-    def is_ver(self) -> bool:
-        return self.st[0] == self.end[0]
-
     def path_trough(self, space: dict[tuple[int, int], int]) -> None:
+        if not all(self.delta):
+            dot = self.st
+            while dot != self.end:
+                space[dot] += 1
+                dot = (dot[0] + self.delta[0], dot[1] + self.delta[1])
+            space[dot] += 1
 
-        if self.is_hor():
-            step = 1 if self.st[0] < self.end[0] else -1
-            for x in range(self.st[0], self.end[0] + step, step):
-                space[x, self.st[1]] += 1
-        elif self.is_ver():
-            step = 1 if self.st[1] < self.end[1] else -1
-            for y in range(self.st[1], self.end[1] + step, step):
-                space[self.st[0], y] += 1
+
+def sign(num: int) -> int:
+    if num:
+        return int(copysign(1, num))
+    return 0
 
 
 def get_input(teste: bool = False) -> list[str]:
@@ -55,7 +54,7 @@ def count_overlaps(grid):
 def solve(test: bool = False):
     inp = get_input(test)
     vecs = parse_input(inp)
-    grid = defaultdict(int)
+    grid: dict[tuple[int, int], int] = defaultdict(int)
     for vec in vecs:
         vec.path_trough(grid)
     return count_overlaps(grid)
