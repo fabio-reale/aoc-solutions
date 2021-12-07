@@ -40,9 +40,7 @@ def solve(inp: str) -> int:
 
 
 TEST = "16,1,2,0,4,2,7,1,2,14"
-test = parse_input(TEST)
-for i in range(17):
-    print(calculate_fuel(test, i))
+assert solve(TEST) == 168
 
 path = Path(__file__).parents[1] / "inputs" / "day_07.txt"
 
