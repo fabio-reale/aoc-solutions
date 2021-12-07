@@ -5,8 +5,12 @@ def parse_input(inp: str) -> list[int]:
     return eval(f"[{inp}]")
 
 
+def manhattan(a: int, b: int) -> int:
+    return abs(a - b)
+
+
 def calculate_fuel(crabs: list[int], pos: int) -> int:
-    return sum([abs(crab - pos) for crab in crabs])
+    return sum([manhattan(crab, pos) for crab in crabs])
 
 
 def search_min_fuel(crabs: list[int], min_pos: int, max_pos: int) -> int:
