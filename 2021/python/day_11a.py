@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Iterator, NamedTuple
+from typing import Iterator, NamedTuple, Any
 from pathlib import Path
 from itertools import product, filterfalse
 
@@ -9,8 +9,11 @@ class Point(NamedTuple):
     row: int
     col: int
 
-    def __add__(self, other: Point) -> Point:
-        return Point(self.row + other.row, self.col + other.col)
+    def __add__(self, other: Any) -> Point:
+        if isinstance(other, Point):
+            return Point(self.row + other.row, self.col + other.col)
+        else:
+            raise TypeError(f"argument must be instance of Point, was {type(other)}")
 
 
 def print_octopi(points: dict[Point, int]) -> None:
