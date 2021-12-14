@@ -9,12 +9,13 @@ Rules = dict[str, str]
 @dataclass
 class Polymer:
     template: Counter[str]
-    last_pair: str
+    counts: Counter[str]
 
     def step(self, rules: Rules) -> None:
         new_template: Counter[str] = Counter()
         for pair, count in self.template.items():
             new_letter = rules[pair]
+            self.counts[new_letter] += count
 
             left = pair[0] + new_letter
             new_template[left] += count
@@ -23,22 +24,12 @@ class Polymer:
             new_template[right] += count
 
         self.template = new_template
-        self.last_pair = rules[self.last_pair] + self.last_pair[1]
-
-    def count_letters(self) -> Counter[str]:
-        letters: Counter[str] = Counter()
-        for pair, count in self.template.items():
-            letters[pair[0]] += count
-
-        letters[self.last_pair[1]] += 1
-        return letters
 
 
 def parse_template(template: str) -> Polymer:
     poly_template = Counter(template[i - 1 : i + 1] for i in range(1, len(template)))
-    last = template[-2:]
 
-    return Polymer(poly_template, last)
+    return Polymer(poly_template, Counter(template))
 
 
 def parse_rules(insert_rules: str) -> Rules:
@@ -67,9 +58,7 @@ def solve(inp: str, steps: int) -> int:
     polymer, rules = parse_input(inp)
     for i in range(steps):
         polymer.step(rules)
-    cnt = polymer.count_letters()
-    val = score(cnt)
-    return val
+    return score(polymer.counts)
 
 
 if __name__ == "__main__":
