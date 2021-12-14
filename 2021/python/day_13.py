@@ -5,6 +5,7 @@ from collections import defaultdict
 import sys
 
 
+# TODO: dot_map should be a set, not a defaultdict
 class Paper:
     def __init__(self, dot_map: dict[tuple[Any, ...], bool]) -> None:
         self.dot_map = dot_map
@@ -14,6 +15,7 @@ class Paper:
     def count_dots(self) -> int:
         return sum(self.dot_map.values())
 
+    # TODO: abstract into a single fold method
     def fold_x(self, x_val: int) -> None:
         self.max_x = x_val - 1
 
