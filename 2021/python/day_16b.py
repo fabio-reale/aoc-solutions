@@ -3,6 +3,11 @@ from typing import Any, TypeVar
 import sys
 import itertools as it
 
+# TODO: improve typing by refactoring
+# idea is to have a Base Packet class with no value
+# but with an aditional str attribute any child class can use to transmit remaining bits
+# then LiteralPacket and OperationPacket can be specialized
+
 
 class Packet:
     def __init__(self, ver: int, op: int, val: str | int | list[Packet]) -> None:
@@ -109,6 +114,7 @@ def process_bin_str(bin_str: str, max_packs: int = -1) -> tuple[list[Packet], st
     return packs, bin_str
 
 
+# TODO: use len(inp) and str.zfill to parse_input
 def parse_input_dumb(inp: str) -> str:
     hex_map = {
         "0": "0000",
